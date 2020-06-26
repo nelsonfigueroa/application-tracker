@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
@@ -17,12 +18,14 @@ func returnAllApplications(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Applications)
 }
 
-// these are the routes
+// these are the routes, using mux
 func handleRequests() {
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/applications", returnAllApplications)
+	router := mux.NewRouter().StrictSlash(true)
 
-	log.Fatal(http.ListenAndServe(":10000", nil))
+	router.HandleFunc("/", homePage)
+	router.HandleFunc("/applications", returnAllApplications)
+
+	log.Fatal(http.ListenAndServe(":10000", router))
 }
 
 type Application struct {
