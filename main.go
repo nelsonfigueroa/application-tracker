@@ -79,8 +79,8 @@ func handleRequests() {
 
 	router.HandleFunc("/", homePage)
 	router.HandleFunc("/applications", returnAllApplications)
-	router.HandleFunc("/application/{id}", returnSingleApplication)
-	router.HandleFunc("/application", createNewApplication).Methods("POST")
+	router.HandleFunc("/applications/{id}", returnSingleApplication)
+	router.HandleFunc("/applications", createNewApplication).Methods("POST")
 	router.HandleFunc("/applications/{id}", deleteApplication).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":10000", router))
