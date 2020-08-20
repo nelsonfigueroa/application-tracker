@@ -44,8 +44,7 @@ func createNewApplication(w http.ResponseWriter, r *http.Request) {
 
 	var application Application
 	json.Unmarshal(reqBody, &application)
-	// update our global Articles array to include
-	// our new Article
+	// update global Applications array
 	Applications = append(Applications, application)
 
 	json.NewEncoder(w).Encode(application)
