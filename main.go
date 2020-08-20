@@ -14,11 +14,13 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: homePage")
 }
 
+// Index
 func returnAllApplications(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnAllApplications")
 	json.NewEncoder(w).Encode(Applications)
 }
 
+// Show
 func returnSingleApplication(w http.ResponseWriter, r *http.Request) {
 	// you can extract variables in URLs, and we use that to find the corresponding application
 	vars := mux.Vars(r)
@@ -34,6 +36,7 @@ func returnSingleApplication(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Create
 func createNewApplication(w http.ResponseWriter, r *http.Request) {
 	// get the body of our POST request
 	// return the string response containing the request body
@@ -48,18 +51,42 @@ func createNewApplication(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(application)
 }
 
-// these are the routes, using mux
+// Delete
+func deleteApplication(w http.ResponseWriter, r *http.Request) {
+	// parse parameters
+	vars := mux.Vars(r)
+	// get ID of application to delete
+	id := vars["id"]
+
+	// loop through applications to find the correct one
+	for index, application := range Applications {
+		if application.Id == id {
+			// if applicaton is found, update Applications array to remove Application
+			Applications = append(Applications[:index], Applications[index+1:]...)
+			// return deleted application
+			json.NewEncoder(w).Encode(application)
+			break
+		}
+	}
+}
+
+// Routes, using mux
+// they point to functions defined above
 func handleRequests() {
+	fmt.Println("HTTP Server Started.")
+
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/", homePage)
 	router.HandleFunc("/applications", returnAllApplications)
 	router.HandleFunc("/application/{id}", returnSingleApplication)
 	router.HandleFunc("/application", createNewApplication).Methods("POST")
+	router.HandleFunc("/applications/{id}", deleteApplication).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":10000", router))
 }
 
+// this is the Application "model"
 type Application struct {
 	Id       string `json:"Id"`
 	Date     string `json:"Date"`
