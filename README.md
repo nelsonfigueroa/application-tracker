@@ -23,3 +23,11 @@ The Application model consists of the following attributes:
 | Company   | `string` |
 | Position  | `string` |
 | Location  | `string` |
+
+# Running Locally
+
+Assuming Go is installed, simply run
+
+```
+go run main.go
+```
