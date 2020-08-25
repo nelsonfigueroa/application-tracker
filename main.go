@@ -94,9 +94,7 @@ type Application struct {
 	Location string `json:"Location"`
 }
 
-// let's declare a global Applications array
-// that we can then populate in our main function
-// to simulate a database
+// global array in place of a database for now
 var Applications []Application
 
 func main() {
