@@ -31,3 +31,5 @@ Assuming Go is installed, simply run
 ```
 go run main.go
 ```
+
+Then make API calls to 127.0.0.1:10000
